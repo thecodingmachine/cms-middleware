@@ -31,7 +31,7 @@ class CMSMiddlewareServiceProvider implements ServiceProviderInterface
     }
 
 
-    public static function createCmsMiddleware(ContainerInterface $container)
+    public static function createCmsMiddleware(ContainerInterface $container): CMSMiddleware
     {
         return new CMSMiddleware($container->get(PageRegistryInterface::class), $container->get(BlockRendererInterface::class));
     }
