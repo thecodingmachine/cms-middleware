@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TheCodingMachine\CMS\Block\Block;
+use TheCodingMachine\CMS\Block\BlockRenderer;
 use TheCodingMachine\CMS\Page\StaticPageRegistry;
 use TheCodingMachine\CMS\Theme\AggregateThemeFactory;
 use TheCodingMachine\CMS\Theme\SubThemeDescriptor;
@@ -47,10 +48,13 @@ class CMSMiddlewareTest extends TestCase
         ]);
 
         $themeFactory = new AggregateThemeFactory([]);
-        $themeFactory->addThemeFactory(new SubThemeFactory($themeFactory));
-        $themeFactory->addThemeFactory(new TwigThemeFactory($twig));
 
-        $middleware = new CMSMiddleware($pageRegistry, $themeFactory);
+        $blockRenderer = new BlockRenderer($themeFactory);
+
+        $themeFactory->addThemeFactory(new SubThemeFactory($themeFactory));
+        $themeFactory->addThemeFactory(new TwigThemeFactory($twig, $blockRenderer));
+
+        $middleware = new CMSMiddleware($pageRegistry, $blockRenderer);
 
         $delegate = new class implements DelegateInterface {
 
