@@ -1,0 +1,46 @@
+{
+    "name": "thecodingmachine/cms-middleware",
+    "description": "A http-interop compatible CMS middleware. It only provides the middleware and delegates pages fetching to other packages.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Négrier",
+            "email": "d.negrier@thecodingmachine.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "http-interop/http-middleware": "^0.4",
+        "container-interop/service-provider": "^0.3",
+        "thecodingmachine/cms-interfaces": "^1.0",
+        "zendframework/zend-diactoros": "^1.4",
+        "thecodingmachine/middleware-list-universal-module": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2",
+        "thecodingmachine/phpstan-strict-rules": "^0.7",
+        "thecodingmachine/cms-utils": "^1.0",
+        "satooshi/php-coveralls": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheCodingMachine\\CMS\\Middleware\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TheCodingMachine\\CMS\\Middleware\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse src -c phpstan.neon --level=4 --no-progress -vvv"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
