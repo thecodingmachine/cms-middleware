@@ -35,7 +35,7 @@ class CMSMiddlewareTest extends TestCase
             '/foo' => new Block(
                 new SubThemeDescriptor(
                     new TwigThemeDescriptor(
-                        'index.html'
+                        'index.html', []
                     ),
                     [
                         'header' => 'Some header' // Fixme: how to handle blocks here? (think: menus!) => Maybe a "page without URL object???"
@@ -52,7 +52,7 @@ class CMSMiddlewareTest extends TestCase
         $blockRenderer = new BlockRenderer($themeFactory);
 
         $themeFactory->addThemeFactory(new SubThemeFactory($themeFactory));
-        $themeFactory->addThemeFactory(new TwigThemeFactory($twig, $blockRenderer));
+        $themeFactory->addThemeFactory(new TwigThemeFactory($twig, $blockRenderer, 'themes/', '/themes'));
 
         $middleware = new CMSMiddleware($pageRegistry, $blockRenderer);
 
