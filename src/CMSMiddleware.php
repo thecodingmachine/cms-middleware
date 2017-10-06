@@ -41,6 +41,11 @@ class CMSMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
+        // Let's only deal with GET requests.
+        if ($request->getMethod() !== 'GET') {
+            return $delegate->process($request);
+        }
+
         $page = $this->pageRegistry->getPage($request);
 
         if ($page === null) {
