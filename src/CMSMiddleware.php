@@ -9,6 +9,7 @@ use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TheCodingMachine\CMS\Block\BlockRenderer;
+use TheCodingMachine\CMS\Block\CacheableBlock;
 use TheCodingMachine\CMS\Page\PageRegistryInterface;
 use TheCodingMachine\CMS\Theme\ThemeFactoryInterface;
 use Zend\Diactoros\Response;
@@ -54,6 +55,12 @@ class CMSMiddleware implements MiddlewareInterface
 
         $stream = $this->blockRenderer->renderBlock($page);
 
-        return new Response($stream);
+        $response = new Response($stream);
+
+        if ($page instanceof CacheableBlock) {
+            $response = $response->withHeader('Expires', gmdate('D, d M Y H:i:s T', time() + $page->getTtl()));
+        }
+
+        return $response;
     }
 }
