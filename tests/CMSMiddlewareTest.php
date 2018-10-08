@@ -7,6 +7,7 @@ use Interop\Http\ServerMiddleware\DelegateInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TheCodingMachine\CMS\Block\Block;
 use TheCodingMachine\CMS\Block\BlockRenderer;
 use TheCodingMachine\CMS\Page\StaticPageRegistry;
@@ -56,7 +57,7 @@ class CMSMiddlewareTest extends TestCase
 
         $middleware = new CMSMiddleware($pageRegistry, $blockRenderer);
 
-        $delegate = new class implements DelegateInterface {
+        $delegate = new class implements RequestHandlerInterface {
 
             /**
              * Dispatch the next available middleware and return the response.
@@ -65,7 +66,7 @@ class CMSMiddlewareTest extends TestCase
              *
              * @return ResponseInterface
              */
-            public function process(ServerRequestInterface $request)
+            public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new TextResponse('Not found', 404);
             }
