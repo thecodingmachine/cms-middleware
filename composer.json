@@ -11,7 +11,9 @@
     ],
     "require": {
         "php": ">=7.1",
-        "http-interop/http-middleware": "^0.4",
+        "psr/http-message": "^1",
+        "psr/http-server-handler": "^1",
+        "psr/http-server-middleware": "^1",
         "container-interop/service-provider": "^0.4",
         "thecodingmachine/cms-interfaces": "^1.0",
         "zendframework/zend-diactoros": "^1.4",
@@ -22,6 +24,9 @@
         "thecodingmachine/phpstan-strict-rules": "^0.8.2",
         "thecodingmachine/cms-utils": "^1.0",
         "satooshi/php-coveralls": "^1.0"
+    },
+    "conflict": {
+        "http-interop/http-middleware": "*"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1-dev"
         }
     },
     "minimum-stability": "dev",

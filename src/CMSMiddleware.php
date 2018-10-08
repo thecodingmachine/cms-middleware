@@ -4,14 +4,13 @@
 namespace TheCodingMachine\CMS\Middleware;
 
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TheCodingMachine\CMS\Block\BlockRenderer;
 use TheCodingMachine\CMS\Block\CacheableBlock;
 use TheCodingMachine\CMS\Page\PageRegistryInterface;
-use TheCodingMachine\CMS\Theme\ThemeFactoryInterface;
 use Zend\Diactoros\Response;
 
 class CMSMiddleware implements MiddlewareInterface
@@ -31,26 +30,17 @@ class CMSMiddleware implements MiddlewareInterface
         $this->blockRenderer = $blockRenderer;
     }
 
-    /**
-     * Process an incoming server request and return a response, optionally delegating
-     * to the next middleware component to create the response.
-     *
-     * @param ServerRequestInterface $request
-     * @param DelegateInterface $delegate
-     *
-     * @return ResponseInterface
-     */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Let's only deal with GET requests.
         if ($request->getMethod() !== 'GET') {
-            return $delegate->process($request);
+            return $handler->handle($request);
         }
 
         $page = $this->pageRegistry->getPage($request);
 
         if ($page === null) {
-            return $delegate->process($request);
+            return $handler->handle($request);
         }
 
         $stream = $this->blockRenderer->renderBlock($page);
